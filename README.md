@@ -63,8 +63,8 @@ The full eight-minute walkthrough, fixture story, and anticipated Q&A live in [`
 **Requirements:** Node.js 22.9+ and npm.
 
 ```bash
-git clone https://github.com/UdayGoel28/dependency_review.git
-cd dependency_review
+git clone https://github.com/UdayGoel28/Fides.git
+cd Fides
 npm install
 npm run dev
 ```
