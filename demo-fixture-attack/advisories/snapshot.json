@@ -1,0 +1,14 @@
+{
+  "snapshotId": "mujhackx-demo-attack-2026-09-11",
+  "checkedAt": "2026-09-11T12:00:00Z",
+  "source": "simulated supply chain attack",
+  "candidates": {
+    "axios": ["1.14.0", "1.14.1"],
+    "plain-crypto-js": ["1.0.0", "1.0.1"]
+  },
+  "advisories": [
+    { "schema_version": "1.7.0", "id": "SIGNAL-AUTHOR-CHANGED", "modified": "2026-09-11T10:00:00Z", "summary": "Suspicious metadata: Publisher identity changed for this release", "affected": [{ "package": { "ecosystem": "npm", "name": "plain-crypto-js" }, "versions": ["1.0.1"] }] },
+    { "schema_version": "1.7.0", "id": "SIGNAL-INSTALL-SCRIPT", "modified": "2026-09-11T10:00:00Z", "summary": "Suspicious metadata: New install-time script added", "affected": [{ "package": { "ecosystem": "npm", "name": "plain-crypto-js" }, "versions": ["1.0.1"] }] },
+    { "schema_version": "1.7.0", "id": "SIGNAL-NEW-DEPENDENCY", "modified": "2026-09-11T10:00:00Z", "summary": "Suspicious metadata: Trusted package suddenly depends on unknown package", "affected": [{ "package": { "ecosystem": "npm", "name": "axios" }, "versions": ["1.14.1"] }] }
+  ]
+}

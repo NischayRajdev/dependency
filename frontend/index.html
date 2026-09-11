@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17351f">
+  <title>Depcheck Verify</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="topbar">
+    <a class="brand" href="#home" aria-label="Depcheck Verify home">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i></span>
+      <span>DEPCHECK <em>VERIFY</em></span>
+    </a>
+    <div class="topbar-actions">
+      <div id="engine-status" class="status-pill" role="status"><span aria-hidden="true"></span> Engine idle</div>
+      <button id="top-export" class="button button-quiet" type="button" disabled>Export audit</button>
+    </div>
+  </header>
+
+  <div class="shell">
+    <aside class="sidebar" aria-label="Workflow navigation">
+      <div>
+        <p class="sidebar-label">Evidence workspace</p>
+        <nav>
+          <a data-view="home" href="#home"><span class="nav-icon" aria-hidden="true">⌂</span>Home</a>
+          <a data-view="scan" href="#scan"><span class="nav-icon" aria-hidden="true">⌁</span>Scan &amp; scope</a>
+          <a data-view="summary" href="#summary"><span class="nav-icon" aria-hidden="true">◫</span>Summary &amp; findings</a>
+          <a data-view="finding" href="#finding"><span class="nav-icon" aria-hidden="true">◎</span>Finding deep dive</a>
+          <a data-view="candidates" href="#candidates"><span class="nav-icon" aria-hidden="true">⇄</span>Candidate comparison</a>
+          <a data-view="audit" href="#audit"><span class="nav-icon" aria-hidden="true">⇩</span>Audit export</a>
+          <a data-view="settings" href="#settings"><span class="nav-icon" aria-hidden="true">⚙</span>Settings</a>
+        </nav>
+      </div>
+      <div class="scope-note">
+        <span class="scope-dot" aria-hidden="true"></span>
+        <div><strong>Bounded local analysis</strong><small>npm lockfile v2/v3 · JavaScript static subset · bundled snapshot</small></div>
+      </div>
+    </aside>
+
+    <main id="main-content">
+      <div id="connection-banner" class="message message-warning" hidden>You’re viewing a local file, so the analysis engine is unavailable. Run <code>npm run dev</code>, then <a href="http://127.0.0.1:3000">open the running app</a>.</div>
+
+      <section class="view home-view" data-page="home">
+        <div class="hero">
+          <div class="hero-copy">
+            <p class="eyebrow eyebrow-light">Local-first dependency review</p>
+            <h1>Supply-chain evidence, made clear.</h1>
+            <p class="hero-lede">Understand affected packages, bounded code paths, and upgrade candidates without executing the project you scan.</p>
+            <div class="hero-actions"><a href="#scan" class="button button-lime">Start a review <span aria-hidden="true">→</span></a><a href="#summary" class="text-link">View current findings</a></div>
+            <div class="hero-trust"><span>Read-only scan</span><span>Traceable evidence</span><span>Explicit unknowns</span></div>
+          </div>
+          <div class="hero-console" aria-label="Dependency review preview">
+            <div class="console-bar"><span></span><span></span><span></span><small>Evidence review</small></div>
+            <div class="console-content">
+              <p class="console-kicker">Review pipeline</p>
+              <div class="console-row"><i class="check">✓</i><div><strong>Inventory resolved</strong><small>Exact installed instances</small></div><span>Complete</span></div>
+              <div class="console-row"><i class="check">✓</i><div><strong>Advisories matched</strong><small>Snapshot-backed applicability</small></div><span>Complete</span></div>
+              <div class="console-row"><i class="pending">•</i><div><strong>Reachability bounded</strong><small>Unsupported paths stay visible</small></div><span>Evidence</span></div>
+            </div>
+            <div class="pixel-trail" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+        </div>
+        <div class="principles">
+          <article><span>01</span><h2>Evidence before scores</h2><p>Each conclusion stays attached to the source, digest, and uncertainty that support it.</p></article>
+          <article><span>02</span><h2>Unknown stays unknown</h2><p>Unsupported code patterns remain visible instead of becoming confident negatives.</p></article>
+          <article><span>03</span><h2>Decisions you can explain</h2><p>Compare upgrade candidates against the exact checks that were actually performed.</p></article>
+        </div>
+      </section>
+
+      <section class="view" data-page="scan" hidden>
+        <header class="page-heading"><p class="eyebrow">Local evidence pipeline</p><h1>Scan &amp; scope</h1><p class="lede">Analyse the included team-owned fixture without installing, importing, building, or executing it.</p></header>
+        <article class="panel import-panel">
+          <div class="panel-heading"><div><p class="section-kicker">Choose an input</p><h2>Sample data or your own lockfile</h2></div><span class="soft-chip">512 KiB maximum</span></div>
+          <p>The demo is ready to scan. For an import, download the sample files or select compatible local files.</p>
+          <div class="actions"><a class="button button-outline" href="/api/sample" download>Download sample lockfile</a><a class="button button-outline" href="/api/sample-source" download>Download sample JavaScript</a></div>
+          <div class="grid two file-grid"><label>npm lockfile (.json)<input id="lockfile-input" type="file" accept=".json"></label><label>Entry source (.js, optional)<input id="source-input" type="file" accept=".js,.mjs,.cjs"></label></div>
+          <p class="muted">Files are parsed locally by this server and never executed. Imports use the synthetic advisory snapshot; no match does not mean safe. Without source, reachability is unknown.</p>
+          <button id="import-button" class="button button-outline" type="button">Analyse imported files</button>
+        </article>
+        <div class="grid two">
+          <article class="panel"><p class="section-kicker">Selected target</p><h2>Included fixture</h2><dl><dt>Project</dt><dd>demo-fixture</dd><dt>Lockfile</dt><dd>package-lock.json v3</dd><dt>Entry point</dt><dd>src/index.js</dd><dt>Advisories</dt><dd>Dated bundled snapshot</dd></dl></article>
+          <article class="panel"><p class="section-kicker">Guardrails</p><h2>Enforced scope</h2><ul class="check-list"><li>Read-only bounded text parsing</li><li>Exact npm package-instance paths</li><li>Static JavaScript reachability subset</li><li>Dynamic import reported as unknown</li></ul></article>
+        </div>
+        <div id="scan-message" class="message" role="status">Ready to analyse the included fixture.</div>
+        <div class="actions scan-actions"><button id="scan-button" class="button button-lime" type="button">Run deterministic scan</button><button id="scan-attack-button" class="button button-danger" type="button">Demo compromise signals</button></div>
+      </section>
+
+      <section class="view" data-page="summary" hidden>
+        <header class="page-heading"><p class="eyebrow">Current scan result</p><h1>Summary &amp; findings</h1><p class="lede">A high-level view of the exact report currently loaded in this browser session.</p></header>
+        <div id="metrics" class="metrics" aria-label="Report metrics"></div>
+        <div id="findings-state" class="message" role="status">Run a scan to populate findings.</div>
+        <div id="findings-body" class="findings-grid"></div>
+        <div id="pagination" class="pagination"></div>
+      </section>
+
+      <section class="view deep-dive-view" data-page="finding" hidden>
+        <header class="page-heading"><p class="eyebrow">Structured evidence chain</p><h1>Finding deep dive</h1><p class="lede">Move from the plain-language explanation to the underlying evidence and remaining uncertainty.</p></header>
+        <div id="finding-detail" class="empty-state">Select a finding from the summary.</div>
+      </section>
+
+      <section class="view candidates-view" data-page="candidates" hidden>
+        <header class="page-heading"><p class="eyebrow">Bounded candidate set</p><h1>Candidate comparison</h1><p class="lede">Compare each supplied candidate against advisory applicability, recorded checks, and unresolved uncertainty. Acceptance covers only removal of the supplied advisory match.</p></header>
+        <div id="candidate-list" class="candidate-matrix"><div class="empty-state">Run a scan to generate candidates.</div></div>
+      </section>
+
+      <section class="view" data-page="audit" hidden>
+        <header class="page-heading"><p class="eyebrow">Versioned JSON record</p><h1>Audit export</h1><p class="lede">Inspect or download the complete structured report behind this interface.</p></header>
+        <div class="actions"><button id="page-export" class="button button-lime" type="button" disabled>Download audit JSON</button></div>
+        <pre id="audit-preview" class="code">Run a scan to preview the audit record.</pre>
+      </section>
+
+      <section class="view" data-page="settings" hidden>
+        <header class="page-heading"><p class="eyebrow">Local workspace</p><h1>Settings</h1><p class="lede">Preferences stay in this browser only.</p></header>
+        <div class="grid two">
+          <article class="panel form-panel"><p class="section-kicker">Display</p><h2>Appearance</h2><label>Theme<select id="theme-setting"><option value="dark">Dark</option><option value="light">Light</option><option value="system">Use device setting</option></select></label><label>Contrast<select id="contrast-setting"><option value="normal">Standard</option><option value="high">High contrast</option></select></label><label>Findings per page<select id="pagesize-setting"><option value="5">5 rows</option><option value="10">10 rows</option><option value="25">25 rows</option></select></label></article>
+          <article class="panel"><p class="section-kicker">Data handling</p><h2>Authentication &amp; privacy</h2><p><strong>Local workspace</strong></p><p>No account is required. Imports require a same-origin session token; this is not a multi-user login system.</p><label class="checkbox-label"><input id="remember-setting" type="checkbox" checked>Keep the current report across refreshes in this tab</label><button id="clear-report" class="button button-outline" type="button">Clear current report</button><p class="muted">This removes the report from the tab, not input files or downloaded exports.</p></article>
+        </div>
+        <div id="settings-message" class="message" role="status">Preferences save automatically.</div>
+      </section>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

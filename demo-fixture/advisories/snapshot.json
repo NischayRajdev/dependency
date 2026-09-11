@@ -1,0 +1,15 @@
+{
+  "snapshotId": "mujhackx-demo-osv-2026-09-11",
+  "checkedAt": "2026-09-11T12:00:00Z",
+  "source": "bundled synthetic OSV-format demonstration snapshot",
+  "candidates": {
+    "vulnerable-dep": ["1.0.0", "1.0.1", "not-semver"],
+    "transitive-vuln": ["3.0.0", "3.1.0"],
+    "dynamic-dep": ["1.0.0", "1.2.0"]
+  },
+  "advisories": [
+    { "schema_version": "1.7.0", "id": "SYNTHETIC-DIRECT-001", "modified": "2026-09-11T10:00:00Z", "summary": "Synthetic direct-dependency demonstration advisory", "affected": [{ "package": { "ecosystem": "npm", "name": "vulnerable-dep" }, "versions": ["1.0.0"] }] },
+    { "schema_version": "1.7.0", "id": "SYNTHETIC-TRANSITIVE-001", "modified": "2026-09-11T10:05:00Z", "summary": "Synthetic transitive-dependency demonstration advisory", "affected": [{ "package": { "ecosystem": "npm", "name": "transitive-vuln" }, "versions": ["3.0.0"] }] },
+    { "schema_version": "1.7.0", "id": "SYNTHETIC-DYNAMIC-001", "modified": "2026-09-11T10:10:00Z", "summary": "Synthetic dynamic-import demonstration advisory", "affected": [{ "package": { "ecosystem": "npm", "name": "dynamic-dep" }, "versions": ["1.0.0"] }] }
+  ]
+}

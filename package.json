@@ -1,0 +1,28 @@
+{
+  "name": "dependency-review-docs",
+  "version": "1.0.0",
+  "description": "Dependency Review is our MUJHackX 4.0 solution for Cybersecurity PS12: Software Supply Chain Dependency Risk Analyser.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "node --experimental-strip-types --test tests/*.test.ts",
+    "build": "npm run typecheck && node --check demo.js && node --check frontend/app.js",
+    "typecheck": "tsc --noEmit",
+    "dev": "node --env-file=.env --experimental-strip-types demo.js",
+    "start": "node --env-file=.env --experimental-strip-types demo.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@babel/parser": "^7.26.9",
+    "@babel/traverse": "^7.26.9"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.2",
+    "typescript": "7.0.2"
+  }
+}

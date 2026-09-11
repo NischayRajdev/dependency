@@ -1,0 +1,12 @@
+{
+  "name": "demo-fixture",
+  "version": "1.0.0",
+  "description": "Team-owned deterministic fixture for the DEPCHECK demo",
+  "main": "src/index.js",
+  "dependencies": {
+    "carrier-dep": "1.0.0",
+    "duplicate-dep": "1.0.0",
+    "dynamic-dep": "1.0.0",
+    "vulnerable-dep": "1.0.0"
+  }
+}

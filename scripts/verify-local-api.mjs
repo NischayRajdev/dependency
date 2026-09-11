@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+const base = 'http://127.0.0.1:3000';
+const session = await fetch(`${base}/api/session`).then(r => r.json());
+const lockfile = await fetch(`${base}/api/sample`).then(r => r.text());
+const source = await fetch(`${base}/api/sample-source`).then(r => r.text());
+const post = (body, headers = {}) => fetch(`${base}/api/import`, { method: 'POST', headers: { 'Content-Type': 'application/json', Origin: base, 'X-Depcheck-Token': session.token, ...headers }, body });
+assert.equal((await post(JSON.stringify({lockfile, source}), {'X-Depcheck-Token':'wrong'})).status, 403);
+assert.equal((await post(JSON.stringify({lockfile, source}), {Origin:'https://example.invalid'})).status, 403);
+assert.equal((await post('{')).status, 400);
+assert.equal((await post(' '.repeat(2097153))).status, 413);
+const response = await post(JSON.stringify({lockfile, source}));
+assert.equal(response.status, 200);
+const report = await response.json();
+assert.equal(report.inventory.data.instances.length, 6);
+assert.equal(report.findings.length, 3);
+assert.equal(report.candidates.length, 7);
+console.log('PASS: sample downloads, valid import, token rejection, origin rejection, malformed body and oversized body.');
