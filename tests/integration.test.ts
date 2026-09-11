@@ -22,7 +22,7 @@ test("Integration - complete deterministic demo audit", async () => {
   assert.equal(firstId, secondId, "frozen inputs must produce the same scan identity");
 
   const report = controller.getScanReport(firstId);
-  assert.equal(report.schemaVersion, "depcheck-audit-v1");
+  assert.equal(report.schemaVersion, "fides-audit-v1");
   assert.equal(report.engine.version, "0.1.0-hackathon");
   assert.equal(report.advisorySnapshot.source, "bundled_snapshot");
   assert.equal(report.advisorySnapshot.id, "mujhackx-demo-osv-2026-09-11");

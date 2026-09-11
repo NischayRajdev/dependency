@@ -2,7 +2,7 @@
 
 ## Context
 
-Dependency Review is a local-first analysis application. Static analysis is read-only. Optional compatibility execution is a separate trust boundary and initially accepts only team-owned fixtures.
+Fides is a local-first analysis application. Static analysis is read-only. Optional compatibility execution is a separate trust boundary and initially accepts only team-owned fixtures.
 
 ```mermaid
 flowchart TD

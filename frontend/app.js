@@ -10,15 +10,15 @@
   }
 
   let preferences = { theme: "dark", contrast: "normal", pageSize: 5, remember: true };
-  try { Object.assign(preferences, JSON.parse(storageGet(localStorage, "depcheck-settings") || "{}")); } catch { /* Use defaults. */ }
+  try { Object.assign(preferences, JSON.parse(storageGet(localStorage, "fides-settings") || "{}")); } catch { /* Use defaults. */ }
 
   function loadStoredReport() {
     try {
-      const value = preferences.remember && storageGet(sessionStorage, "depcheck-audit-report");
+      const value = preferences.remember && storageGet(sessionStorage, "fides-audit-report");
       const report = value ? JSON.parse(value) : null;
-      return report?.schemaVersion === "depcheck-audit-v1" && Array.isArray(report.findings) && Array.isArray(report.candidates) && report.inventory && report.scan ? report : null;
+      return report?.schemaVersion === "fides-audit-v1" && Array.isArray(report.findings) && Array.isArray(report.candidates) && report.inventory && report.scan ? report : null;
     } catch {
-      storageSet(sessionStorage, "depcheck-audit-report", null);
+      storageSet(sessionStorage, "fides-audit-report", null);
       return null;
     }
   }
@@ -49,7 +49,7 @@
     if (page === "finding") renderFinding();
     if (page === "candidates") renderCandidates();
     if (page === "audit") renderAudit();
-    document.title = `${document.querySelector(`[data-view="${page}"]`)?.textContent.trim() || "Depcheck"} · Depcheck Verify`;
+    document.title = `${document.querySelector(`[data-view="${page}"]`)?.textContent.trim() || "Fides"} · Fides Verify`;
     window.scrollTo({ top: 0, behavior: "instant" });
   }
 
@@ -451,13 +451,34 @@
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement("a");
     anchor.href = url;
-    anchor.download = `depcheck-audit-${state.report.scan.id}.json`;
+    anchor.download = `fides-audit-${state.report.scan.id}.json`;
     anchor.click();
     URL.revokeObjectURL(url);
   }
 
+  function checkEngineConnection() {
+    const banner = $("connection-banner");
+    if (!banner) return true;
+    if (location.protocol === "file:") {
+      banner.innerHTML = `You’re viewing a local file directly, so the analysis engine is unavailable. Run <code>npm run dev</code>, then <a href="http://127.0.0.1:3000">open http://127.0.0.1:3000</a>.`;
+      banner.hidden = false;
+      return false;
+    }
+    if (location.port && location.port !== "3000") {
+      banner.innerHTML = `You’re viewing this page on port ${location.port} (e.g. VS Code Live Server). The Fides engine runs on port 3000. Please start the backend with <code>npm run dev</code> and <a href="http://127.0.0.1:3000">open http://127.0.0.1:3000</a>.`;
+      banner.hidden = false;
+      return false;
+    }
+    banner.hidden = true;
+    return true;
+  }
+
   async function runScan(imported = false, mode = "default") {
-    if (location.protocol === "file:") { $("connection-banner").hidden = false; location.hash = "scan"; return; }
+    if (!checkEngineConnection()) {
+      location.hash = "scan";
+      $("scan-message").textContent = `Cannot scan: page is running on ${location.port ? 'port ' + location.port : 'file protocol'} instead of the Fides backend. Start the backend with "npm run dev" and open http://127.0.0.1:3000.`;
+      return;
+    }
     const primaryButton = imported ? $("import-button") : mode === "attack" ? $("scan-attack-button") : $("scan-button");
     const buttons = [$("scan-button"), $("scan-attack-button"), $("import-button")];
     const labels = buttons.map(button => button.textContent);
@@ -475,7 +496,7 @@
         const session = await fetch("/api/session").then(result => result.json());
         response = await fetch("/api/import", {
           method: "POST",
-          headers: { "Content-Type": "application/json", "X-Depcheck-Token": session.token },
+          headers: { "Content-Type": "application/json", "X-Fides-Token": session.token },
           body: JSON.stringify({ lockfile: await lockfile.text(), source: source ? await source.text() : undefined }),
           signal: AbortSignal.timeout(20000),
         });
@@ -483,13 +504,21 @@
         const endpoint = mode === "attack" ? "/api/scan-results?mode=attack" : "/api/scan-results";
         response = await fetch(endpoint, { headers: { Accept: "application/json" }, signal: AbortSignal.timeout(20000) });
       }
+      const contentType = response.headers.get("content-type") || "";
+      if (!contentType.includes("application/json")) {
+        throw new Error(
+          location.port && location.port !== "3000"
+            ? `Page is running on port ${location.port} (Live Server) instead of the backend server. Start the server with "npm run dev" and open http://127.0.0.1:3000`
+            : `Backend returned non-JSON response (${contentType || "HTML"}). Check that npm run dev is running on port 3000.`
+        );
+      }
       const payload = await response.json();
       if (!response.ok) throw new Error(payload.error || "SCAN_FAILED");
       state.report = payload;
       state.selectedFindingId = payload.findings[0]?.id ?? null;
       state.page = 1;
       state.scanMode = imported ? "default" : mode;
-      storageSet(sessionStorage, "depcheck-audit-report", preferences.remember ? JSON.stringify(payload) : null);
+      storageSet(sessionStorage, "fides-audit-report", preferences.remember ? JSON.stringify(payload) : null);
       $("top-export").disabled = false;
       $("page-export").disabled = false;
       $("engine-status").lastChild.textContent = " Engine complete";
@@ -526,8 +555,8 @@
         pageSize: Number($("pagesize-setting").value),
         remember: $("remember-setting").checked,
       };
-      storageSet(localStorage, "depcheck-settings", JSON.stringify(preferences));
-      storageSet(sessionStorage, "depcheck-audit-report", preferences.remember && state.report ? JSON.stringify(state.report) : null);
+      storageSet(localStorage, "fides-settings", JSON.stringify(preferences));
+      storageSet(sessionStorage, "fides-audit-report", preferences.remember && state.report ? JSON.stringify(state.report) : null);
       applyPreferences();
       $("settings-message").textContent = "Preferences applied.";
     });
@@ -538,7 +567,7 @@
     state.report = null;
     state.selectedFindingId = null;
     state.scanMode = "default";
-    storageSet(sessionStorage, "depcheck-audit-report", null);
+    storageSet(sessionStorage, "fides-audit-report", null);
     $("top-export").disabled = true;
     $("page-export").disabled = true;
     $("engine-status").lastChild.textContent = " Engine idle";
@@ -547,7 +576,7 @@
     $("settings-message").textContent = "Current report cleared.";
   });
 
-  $("connection-banner").hidden = location.protocol !== "file:";
+  checkEngineConnection();
   applyPreferences();
   window.addEventListener("hashchange", route);
   $("scan-button").addEventListener("click", () => runScan(false, "default"));

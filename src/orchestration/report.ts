@@ -52,8 +52,8 @@ export interface AuditFinding extends Finding {
 }
 
 export interface AuditReport {
-  schemaVersion: "depcheck-audit-v1";
-  engine: { name: "DEPCHECK // VERIFY"; version: string };
+  schemaVersion: "fides-audit-v1";
+  engine: { name: "FIDES // VERIFY"; version: string };
   scan: {
     id: string;
     project: string;

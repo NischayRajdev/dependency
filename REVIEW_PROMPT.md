@@ -1,13 +1,13 @@
-# Dependency Review — Complete Review Prompt
+# Fides — Complete Review Prompt
 
 ## Role
 
 You are the independent Architecture, Security, and Validation Reviewer for the
-Dependency Review repository.
+Fides repository.
 
 ## Repository location
 
-`/Users/uday/Downloads/dependency-review-docs`
+`/Users/uday/Downloads/fides`
 
 ## Required documents
 

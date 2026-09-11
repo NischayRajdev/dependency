@@ -67,7 +67,7 @@ const server = http.createServer(async (req, res) => {
       send(res, 200, await fs.readFile(path.join(fixtureRoot, "src/index.js")), "text/plain", { "Content-Disposition": 'attachment; filename="entry.js"' }); return;
     }
     if (req.method === "POST" && url.pathname === "/api/import") {
-      if (req.headers.origin !== `http://${req.headers.host}` || req.headers["x-depcheck-token"] !== sessionToken) {
+      if (req.headers.origin !== `http://${req.headers.host}` || req.headers["x-fides-token"] !== sessionToken) {
         send(res, 403, JSON.stringify({ error: "SESSION_REJECTED" })); return;
       }
       if (!req.headers["content-type"]?.startsWith("application/json")) { send(res, 415, JSON.stringify({ error: "JSON_REQUIRED" })); return; }
@@ -91,7 +91,7 @@ const server = http.createServer(async (req, res) => {
     if (req.method === "GET" && url.pathname === "/api/audit-export") {
       const report = await scanDemo();
       send(res, 200, JSON.stringify(report, null, 2), "application/json; charset=utf-8", {
-        "Content-Disposition": `attachment; filename="depcheck-audit-${report.scan.id}.json"`,
+        "Content-Disposition": `attachment; filename="fides-audit-${report.scan.id}.json"`,
       });
       return;
     }
@@ -161,4 +161,4 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-server.listen(port, host, () => console.log(`DEPCHECK // VERIFY ready at http://${host}:${port}`));
+server.listen(port, host, () => console.log(`FIDES // VERIFY ready at http://${host}:${port}`));

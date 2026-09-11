@@ -4,7 +4,7 @@ These instructions apply to the entire repository. Read `README.md`, `SCOPE.md`,
 
 ## Product contract
 
-Build an evidence-based dependency review tool for the supported npm/JavaScript subset. Do not silently expand scope. Do not claim that a package is safe, exploitable, malware-free or legally compliant unless the repository contains an authorised rule and sufficient evidence for that exact claim.
+Build an evidence-based Fides tool for the supported npm/JavaScript subset. Do not silently expand scope. Do not claim that a package is safe, exploitable, malware-free or legally compliant unless the repository contains an authorised rule and sufficient evidence for that exact claim.
 
 Use these reachability states exactly:
 

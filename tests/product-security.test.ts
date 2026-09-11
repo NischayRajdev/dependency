@@ -7,7 +7,7 @@ import { ScanController, ScanError } from "../src/orchestration/controller.ts";
 import { BoundaryError } from "../src/security/boundary.ts";
 
 async function fixture(lockfile: unknown, advisory: unknown = { snapshotId: "missing", checkedAt: "2026-09-11T00:00:00Z", advisories: [] }) {
-  const root = await fs.mkdtemp(path.join(os.tmpdir(), "depcheck-product-"));
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), "fides-product-"));
   await fs.mkdir(path.join(root, "src")); await fs.mkdir(path.join(root, "advisories"));
   await fs.writeFile(path.join(root, "src/index.js"), "export const value = 1;");
   await fs.writeFile(path.join(root, "package-lock.json"), typeof lockfile === "string" ? lockfile : JSON.stringify(lockfile));
@@ -33,7 +33,7 @@ test("missing advisory data yields an explicit empty dated snapshot", async () =
 test("entry-point traversal and symlink escape are rejected", async () => {
   const root = await fixture({ lockfileVersion: 3, packages: { "": {} } });
   await assert.rejects(new ScanController().startScan({ ...request(root), entryPoints: ["../../outside.js"] }), BoundaryError);
-  const outside = await fs.mkdtemp(path.join(os.tmpdir(), "depcheck-outside-")); await fs.writeFile(path.join(outside, "source.js"), "export default 1");
+  const outside = await fs.mkdtemp(path.join(os.tmpdir(), "fides-outside-")); await fs.writeFile(path.join(outside, "source.js"), "export default 1");
   await fs.symlink(path.join(outside, "source.js"), path.join(root, "src/link.js"));
   await assert.rejects(new ScanController().startScan({ ...request(root), entryPoints: ["src/link.js"] }), BoundaryError);
 });
