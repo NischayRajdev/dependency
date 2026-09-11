@@ -1,7 +1,23 @@
 # Dependency Review
 
-Start the local prototype with `npm run dev` and open http://http://127.0.0.1:3000.
-Opening frontend/index.html directly cannot run the analysis engine.
+## Quick start
+
+Requirements: Node.js 22.9 or newer and npm.
+
+```bash
+git clone https://github.com/UdayGoel28/dependency_review.git
+cd dependency_review
+npm install
+npm run dev
+```
+
+Open http://127.0.0.1:3000. The deterministic scan does not require an API key
+or a `.env` file. Opening `frontend/index.html` directly cannot run the analysis
+engine because the page needs the local API server.
+
+AI explanations are optional. To enable them, copy `.env.example` to `.env` and
+add a Groq API key. Keep `.env` local; it is ignored by Git.
+
 Scan & Scope includes a ready-to-run demo, downloadable sample lockfile/source,
 and file import. Settings includes dark/light/system themes, contrast, page size
 and report retention. Imports use the bundled synthetic advisory snapshot.
