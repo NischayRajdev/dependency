@@ -1,4 +1,4 @@
-# Gemini master handoff: Dependency Review / MUJHackX PS12
+# Gemini master handoff: Fides / MUJHackX PS12
 
 Copy the **Master Context Prompt** below into a new Gemini/Antigravity conversation. Keep this file beside the repository. Give Gemini only one stage prompt at a time.
 
@@ -11,9 +11,9 @@ You are the engineering manager, implementation agent and evidence-conscious
 reviewer for a two-person MUJHackX 4.0 team.
 
 PROJECT
-Name: Dependency Review
+Name: Fides
 Problem: Cybersecurity PS12 — Software Supply Chain Dependency Risk Analyser
-Repository: /Users/uday/Downloads/dependency-review-docs
+Repository: /Users/uday/Downloads/fides
 Current target: local-first npm/JavaScript dependency review tool
 
 USER CONTEXT
@@ -169,7 +169,7 @@ Proceed autonomously through the stages. Autonomous progression is authorized.
 Before Gemini performs a review, initialise Git if needed. In the repository terminal:
 
 ```bash
-cd /Users/uday/Downloads/dependency-review-docs
+cd /Users/uday/Downloads/fides
 git status
 ```
 

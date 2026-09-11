@@ -1,7 +1,7 @@
 {
   "name": "demo-fixture",
   "version": "1.0.0",
-  "description": "Team-owned deterministic fixture for the DEPCHECK demo",
+  "description": "Team-owned deterministic fixture for the FIDES demo",
   "main": "src/index.js",
   "dependencies": {
     "carrier-dep": "1.0.0",

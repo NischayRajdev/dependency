@@ -272,7 +272,7 @@ export class ScanController {
     const unsupportedConstructs = reachabilityResults.reduce((sum, result) => sum + result.unsupportedPatterns.reduce((count, gap) => count + gap.count, 0), 0);
     const sourceEvidence = [...entryFiles.entries()].sort().map(([file, content]) => ({ ...evidence("source", content), locator: path.relative(request.projectRoot, file) }));
     const report: AuditReport = {
-      schemaVersion: "depcheck-audit-v1", engine: { name: "DEPCHECK // VERIFY", version: "0.1.0-hackathon" },
+      schemaVersion: "fides-audit-v1", engine: { name: "FIDES // VERIFY", version: "0.1.0-hackathon" },
       scan: { id: scanId, project: path.basename(path.resolve(request.projectRoot)), projectSnapshotDigest,
         lockfileVersion: inventory.data.lockfileVersion, entryPoints: [...entryFiles.keys()].map(file => path.relative(request.projectRoot, file)), completedAt: bundle.checkedAt },
       advisorySnapshot: { id: bundle.snapshotId, checkedAt: bundle.checkedAt, digest: snapshotDigest, source: "bundled_snapshot", advisoryCount: bundle.advisories.length },
@@ -298,7 +298,7 @@ export class ScanController {
 
   private mockReport(scanId: string, findings: Finding[]): AuditReport {
     return {
-      schemaVersion: "depcheck-audit-v1", engine: { name: "DEPCHECK // VERIFY", version: "test-mock" },
+      schemaVersion: "fides-audit-v1", engine: { name: "FIDES // VERIFY", version: "test-mock" },
       scan: { id: scanId, project: "test-mock", projectSnapshotDigest: digest(scanId), lockfileVersion: 3, entryPoints: [], completedAt: "1970-01-01T00:00:00Z" },
       advisorySnapshot: { id: "test-mock", checkedAt: "1970-01-01T00:00:00Z", digest: digest("test-mock"), source: "bundled_snapshot", advisoryCount: 0 },
       inventory: failure("MOCK_INVENTORY_NOT_RUN"), advisories: complete([]), reachability: complete([]),

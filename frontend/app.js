@@ -10,15 +10,15 @@
   }
 
   let preferences = { theme: "dark", contrast: "normal", pageSize: 5, remember: true };
-  try { Object.assign(preferences, JSON.parse(storageGet(localStorage, "depcheck-settings") || "{}")); } catch { /* Use defaults. */ }
+  try { Object.assign(preferences, JSON.parse(storageGet(localStorage, "fides-settings") || "{}")); } catch { /* Use defaults. */ }
 
   function loadStoredReport() {
     try {
-      const value = preferences.remember && storageGet(sessionStorage, "depcheck-audit-report");
+      const value = preferences.remember && storageGet(sessionStorage, "fides-audit-report");
       const report = value ? JSON.parse(value) : null;
-      return report?.schemaVersion === "depcheck-audit-v1" && Array.isArray(report.findings) && Array.isArray(report.candidates) && report.inventory && report.scan ? report : null;
+      return report?.schemaVersion === "fides-audit-v1" && Array.isArray(report.findings) && Array.isArray(report.candidates) && report.inventory && report.scan ? report : null;
     } catch {
-      storageSet(sessionStorage, "depcheck-audit-report", null);
+      storageSet(sessionStorage, "fides-audit-report", null);
       return null;
     }
   }
@@ -49,7 +49,7 @@
     if (page === "finding") renderFinding();
     if (page === "candidates") renderCandidates();
     if (page === "audit") renderAudit();
-    document.title = `${document.querySelector(`[data-view="${page}"]`)?.textContent.trim() || "Depcheck"} · Depcheck Verify`;
+    document.title = `${document.querySelector(`[data-view="${page}"]`)?.textContent.trim() || "Fides"} · Fides Verify`;
     window.scrollTo({ top: 0, behavior: "instant" });
   }
 
@@ -451,7 +451,7 @@
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement("a");
     anchor.href = url;
-    anchor.download = `depcheck-audit-${state.report.scan.id}.json`;
+    anchor.download = `fides-audit-${state.report.scan.id}.json`;
     anchor.click();
     URL.revokeObjectURL(url);
   }
@@ -475,7 +475,7 @@
         const session = await fetch("/api/session").then(result => result.json());
         response = await fetch("/api/import", {
           method: "POST",
-          headers: { "Content-Type": "application/json", "X-Depcheck-Token": session.token },
+          headers: { "Content-Type": "application/json", "X-Fides-Token": session.token },
           body: JSON.stringify({ lockfile: await lockfile.text(), source: source ? await source.text() : undefined }),
           signal: AbortSignal.timeout(20000),
         });
@@ -489,7 +489,7 @@
       state.selectedFindingId = payload.findings[0]?.id ?? null;
       state.page = 1;
       state.scanMode = imported ? "default" : mode;
-      storageSet(sessionStorage, "depcheck-audit-report", preferences.remember ? JSON.stringify(payload) : null);
+      storageSet(sessionStorage, "fides-audit-report", preferences.remember ? JSON.stringify(payload) : null);
       $("top-export").disabled = false;
       $("page-export").disabled = false;
       $("engine-status").lastChild.textContent = " Engine complete";
@@ -526,8 +526,8 @@
         pageSize: Number($("pagesize-setting").value),
         remember: $("remember-setting").checked,
       };
-      storageSet(localStorage, "depcheck-settings", JSON.stringify(preferences));
-      storageSet(sessionStorage, "depcheck-audit-report", preferences.remember && state.report ? JSON.stringify(state.report) : null);
+      storageSet(localStorage, "fides-settings", JSON.stringify(preferences));
+      storageSet(sessionStorage, "fides-audit-report", preferences.remember && state.report ? JSON.stringify(state.report) : null);
       applyPreferences();
       $("settings-message").textContent = "Preferences applied.";
     });
@@ -538,7 +538,7 @@
     state.report = null;
     state.selectedFindingId = null;
     state.scanMode = "default";
-    storageSet(sessionStorage, "depcheck-audit-report", null);
+    storageSet(sessionStorage, "fides-audit-report", null);
     $("top-export").disabled = true;
     $("page-export").disabled = true;
     $("engine-status").lastChild.textContent = " Engine idle";

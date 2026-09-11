@@ -1,4 +1,4 @@
-# Dependency Review
+# Fides
 
 Start the local prototype with `npm run dev` and open http://127.0.0.1:3000.
 Opening frontend/index.html directly cannot run the analysis engine.
@@ -6,7 +6,7 @@ Scan & Scope includes a ready-to-run demo, downloadable sample lockfile/source,
 and file import. Settings includes dark/light/system themes, contrast, page size
 and report retention. Imports use the bundled synthetic advisory snapshot.
 
-Dependency Review is our MUJHackX 4.0 solution for Cybersecurity PS12: Software Supply Chain Dependency Risk Analyser.
+Fides is our MUJHackX 4.0 solution for Cybersecurity PS12: Software Supply Chain Dependency Risk Analyser.
 
 It helps a developer answer three questions before shipping:
 

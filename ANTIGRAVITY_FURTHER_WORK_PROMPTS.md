@@ -1,4 +1,4 @@
-# Dependency Review: corrected Antigravity workflow
+# Fides: corrected Antigravity workflow
 
 ## Immediate verdict from the screenshots
 
@@ -22,7 +22,7 @@ Use the prompts below in order. Start a fresh Antigravity conversation for every
 Paste this block at the beginning of each Antigravity task:
 
 ```text
-Repository: /Users/uday/Downloads/dependency-review-docs
+Repository: /Users/uday/Downloads/fides
 
 Read AGENTS.md first and follow it as the repository-wide authority. Read the
 documents named by this task before acting.
