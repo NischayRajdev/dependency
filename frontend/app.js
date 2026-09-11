@@ -417,7 +417,7 @@
         label: "Evidence",
         render: candidate => {
           const refs = candidate.evidence ?? [];
-          return criterion(refs.length ? refs.map(item => `${item.kind}: ${item.locator}`).join(" · ") : "No candidate evidence references supplied", refs.length ? "pass" : "unknown");
+          return criterion(refs.length ? refs.map(item => `${item.kind}: ${item.locator}`).join("\n") : "No candidate evidence references supplied", refs.length ? "pass" : "unknown");
         },
       },
     ];
