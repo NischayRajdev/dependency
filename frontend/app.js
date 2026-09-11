@@ -456,8 +456,29 @@
     URL.revokeObjectURL(url);
   }
 
+  function checkEngineConnection() {
+    const banner = $("connection-banner");
+    if (!banner) return true;
+    if (location.protocol === "file:") {
+      banner.innerHTML = `You’re viewing a local file directly, so the analysis engine is unavailable. Run <code>npm run dev</code>, then <a href="http://127.0.0.1:3000">open http://127.0.0.1:3000</a>.`;
+      banner.hidden = false;
+      return false;
+    }
+    if (location.port && location.port !== "3000") {
+      banner.innerHTML = `You’re viewing this page on port ${location.port} (e.g. VS Code Live Server). The Fides engine runs on port 3000. Please start the backend with <code>npm run dev</code> and <a href="http://127.0.0.1:3000">open http://127.0.0.1:3000</a>.`;
+      banner.hidden = false;
+      return false;
+    }
+    banner.hidden = true;
+    return true;
+  }
+
   async function runScan(imported = false, mode = "default") {
-    if (location.protocol === "file:") { $("connection-banner").hidden = false; location.hash = "scan"; return; }
+    if (!checkEngineConnection()) {
+      location.hash = "scan";
+      $("scan-message").textContent = `Cannot scan: page is running on ${location.port ? 'port ' + location.port : 'file protocol'} instead of the Fides backend. Start the backend with "npm run dev" and open http://127.0.0.1:3000.`;
+      return;
+    }
     const primaryButton = imported ? $("import-button") : mode === "attack" ? $("scan-attack-button") : $("scan-button");
     const buttons = [$("scan-button"), $("scan-attack-button"), $("import-button")];
     const labels = buttons.map(button => button.textContent);
@@ -482,6 +503,14 @@
       } else {
         const endpoint = mode === "attack" ? "/api/scan-results?mode=attack" : "/api/scan-results";
         response = await fetch(endpoint, { headers: { Accept: "application/json" }, signal: AbortSignal.timeout(20000) });
+      }
+      const contentType = response.headers.get("content-type") || "";
+      if (!contentType.includes("application/json")) {
+        throw new Error(
+          location.port && location.port !== "3000"
+            ? `Page is running on port ${location.port} (Live Server) instead of the backend server. Start the server with "npm run dev" and open http://127.0.0.1:3000`
+            : `Backend returned non-JSON response (${contentType || "HTML"}). Check that npm run dev is running on port 3000.`
+        );
       }
       const payload = await response.json();
       if (!response.ok) throw new Error(payload.error || "SCAN_FAILED");
@@ -547,7 +576,7 @@
     $("settings-message").textContent = "Current report cleared.";
   });
 
-  $("connection-banner").hidden = location.protocol !== "file:";
+  checkEngineConnection();
   applyPreferences();
   window.addEventListener("hashchange", route);
   $("scan-button").addEventListener("click", () => runScan(false, "default"));
