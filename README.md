@@ -1,6 +1,6 @@
 # Dependency Review
 
-Start the local prototype with `npm run dev` and open http://http://127.0.0.1:3001.
+Start the local prototype with `npm run dev` and open http://http://127.0.0.1:3000.
 Opening frontend/index.html directly cannot run the analysis engine.
 Scan & Scope includes a ready-to-run demo, downloadable sample lockfile/source,
 and file import. Settings includes dark/light/system themes, contrast, page size
