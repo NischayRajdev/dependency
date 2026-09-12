@@ -1,5 +1,7 @@
 import { parse } from "@babel/parser";
-import traverse, { NodePath } from "@babel/traverse";
+import _traverse from "@babel/traverse";
+const traverse = typeof _traverse === "function" ? _traverse : (_traverse as any).default;
+
 import type * as t from "@babel/types";
 import { checkpoint, guard, complete, reject, defaultLimits, evidence } from "../contracts/core.ts";
 import type { ResourceLimits } from "../orchestrator/types.ts";
